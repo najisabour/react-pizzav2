@@ -1,15 +1,16 @@
 import React from "react";
 
-function Sort() {
+function Sort({ value, onChangeSort }) {
 
     const [open, setOpen] = React.useState(false);
-
-    const [selected, setSelected] = React.useState(0);
-
-    const listMenu = ['популярности', 'цене', 'алфавиту'];
+    const listMenu = [
+        {name: 'популярности', sortProperty: 'rating'},
+        {name: 'цене', sortProperty: 'price'},
+        {name: 'алфавиту', sortProperty: 'title'}
+    ];
 
     const onClickListItem = (index) => {
-        setSelected(index);
+        onChangeSort(index);
         setOpen(false);
     }
 
@@ -29,18 +30,18 @@ function Sort() {
                     />
                 </svg>
                 <b>Сортировка по:</b>
-                <span>{ listMenu[selected] }</span>
+                <span>{ value.name }</span>
             </div>
             { open && (
                 <div className="sort__popup">
                     <ul>
                         {
-                            listMenu.map((name, index) => (
+                            listMenu.map((obj, index) => (
                                 <li key={index}
-                                    className={selected === index ? 'active' : ''}
-                                    onClick={() => onClickListItem(index)}
+                                    className={value.sortProperty === obj.sortProperty ? 'active' : ''}
+                                    onClick={() => onClickListItem(obj)}
                                 >
-                                    { name }
+                                    { obj.name }
                                 </li>
                             ))
                         }
